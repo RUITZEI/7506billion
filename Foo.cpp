@@ -13,7 +13,7 @@ Foo::Foo() {
 }
 
 void Foo::doFoo(){
-	std::cout<<"Hago terrible Foo";
+	std::cout<<"Hago terrible Foo jojo";
 }
 
 Foo::~Foo() {
