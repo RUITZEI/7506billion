@@ -20,8 +20,8 @@
 
 using namespace std;
 
-typedef map<char const*, int> Mapa;
-typedef map<char const*, int>::iterator IteradorMapa;
+typedef map<string, int> Mapa;
+typedef map<string, int>::iterator IteradorMapa;
 
 
 #ifndef PALABRA_H_
@@ -35,7 +35,7 @@ private:
 	Mapa precedencias;
 	IteradorMapa iterador;
 	IteradorMapa getIteradorMapa();
-	bool existePalabraEnPrecedencias(char const* unString);
+	bool existePalabraEnPrecedencias(string unString);
 
 public:
 	Palabra();
@@ -46,7 +46,7 @@ public:
 	Mapa getPrecedencias();
 	void incrementarApariciones();
 	//Se le pasa directamente el string, no confundir con la clase Palabra.
-	void agregarPrecedencia(char const* unString);
+	void agregarPrecedencia(string unString);
 
 	//Imprime por consola las precedencias como si fuera un {} de python.
 	void mostrarPrecedencias();

@@ -6,6 +6,7 @@
  */
 
 #include "Palabra.h"
+#include <algorithm>
 
 /*
  * PRIVADOS !!!
@@ -16,7 +17,7 @@ IteradorMapa Palabra::getIteradorMapa(){
 /*
  * El metodo FIND de MAP garantiza que la busqueda sea log(N).
  */
-bool Palabra::existePalabraEnPrecedencias(char const* unString){
+bool Palabra::existePalabraEnPrecedencias(string unString){
 	return (this->getPrecedencias().find(unString) != this->getPrecedencias().end());
 }
 
@@ -35,6 +36,8 @@ Palabra::Palabra(){
  * precedencias.
  */
 Palabra::Palabra(string unNombre) {
+	//Lowercase...
+	transform(unNombre.begin(), unNombre.end(), unNombre.begin(), ::tolower);
 	this->nombre = unNombre;
 	this->apariciones = 0;
 }
@@ -63,8 +66,11 @@ Mapa Palabra::getPrecedencias(){
  * que haber aparecido en el texto, por lo que le aumento el contador
  * a la propia palabra.
  */
-void Palabra::agregarPrecedencia(char const* unString){
+void Palabra::agregarPrecedencia(string unString){
 	this->incrementarApariciones();
+
+	//Precedencia en lower case
+	transform(unString.begin(), unString.end(), unString.begin(), ::tolower);
 
 	if (this->existePalabraEnPrecedencias(unString)){
 		this->precedencias[unString] ++;

@@ -6,11 +6,7 @@
  */
 #include "Foo.h"
 #include "Palabra.h"
-#include <stdio.h>
-#include <iostream>
-#include <map>
-#include <string.h>
-#include <utility>
+
 
 
 using namespace std;
@@ -41,13 +37,13 @@ int main(int argc, char **argv) {
 	 */
 
 
-	Palabra *unaPalabra = new Palabra("perro");
+	Palabra *unaPalabra = new Palabra("PERRO");
 	unaPalabra->agregarPrecedencia("mi");
 
 	//3 agregadas para ver lo bien que funciona.
+	unaPalabra->agregarPrecedencia("EL");
 	unaPalabra->agregarPrecedencia("el");
-	unaPalabra->agregarPrecedencia("el");
-	unaPalabra->agregarPrecedencia("el");
+	unaPalabra->agregarPrecedencia("El");
 
 	unaPalabra->agregarPrecedencia("los");
 	unaPalabra->agregarPrecedencia("la");
