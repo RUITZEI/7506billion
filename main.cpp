@@ -5,9 +5,8 @@
  *      Author: manuel
  */
 #include "Foo.h"
+#include "LectorDeArchivo.h"
 #include "Palabra.h"
-
-
 
 using namespace std;
 
@@ -35,6 +34,21 @@ int main(int argc, char **argv) {
 	 * (recemos)
 	 *
 	 */
+
+
+	string palabras = LectorDeArchivo::leerArchivo("practice.txt");
+	cout << "Longitud del string: " << palabras.length() << endl;
+
+	//Deberia mostrar "The Adventure", que son los primeros 13 digitos del txt
+	for (int i = 0; i < 13; i++) {
+		cout << palabras[i];
+	}
+	cout << endl;
+
+	//VER LIBRERIA BOOST (tiene un split copado para poder exTraer las palabras.)
+
+
+
 
 
 	Palabra *unaPalabra = new Palabra("PERRO");
