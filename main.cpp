@@ -7,6 +7,10 @@
 #include "Foo.h"
 #include "LectorDeArchivo.h"
 #include "Palabra.h"
+#include <boost/algorithm/string/split.hpp>
+#include <boost/algorithm/string.hpp>
+#include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -36,6 +40,12 @@ int main(int argc, char **argv) {
 	 */
 
 
+
+
+	/*
+	 * Practice.txt es un archivo de prueba, tamanio bastante menor que el set posta
+	 *
+	 */
 	string palabras = LectorDeArchivo::leerArchivo("practice.txt");
 	cout << "Longitud del string: " << palabras.length() << endl;
 
@@ -45,12 +55,36 @@ int main(int argc, char **argv) {
 	}
 	cout << endl;
 
-	//VER LIBRERIA BOOST (tiene un split copado para poder exTraer las palabras.)
+
+
+	/*
+	 * Cosas de la libreria de boost. Splitea todas las palabras del string y las deja
+	 * en el el vector en el mismo orden en el que aparecieron.
+	 */
+    typedef vector< string > split_vector_type;
+    split_vector_type SplitVec;
+    //Is Any Of: caracteres por los que splitea palabra.
+    boost::split(SplitVec, palabras, boost::is_any_of(" .,?!\"-"), boost::token_compress_on);
+
+    //Muestra por consola todas las palabras del archivo de arriba, es super eficiente.
+    /*for (std::vector<std::string>::iterator pos = SplitVec.begin(); pos != SplitVec.end(); ++pos) {
+          cout << *pos << endl;
+      }
+	/*
+
+
+	/* FALTA
+	 * Ir iterando de a 2 elementos e ir agregandolos en la lista con sus precedencias.
+	 */
 
 
 
 
 
+
+    /*
+     * Pruebas sobre la clase PALABRA.
+     */
 	Palabra *unaPalabra = new Palabra("PERRO");
 	unaPalabra->agregarPrecedencia("mi");
 
