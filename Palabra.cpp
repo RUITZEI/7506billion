@@ -26,10 +26,6 @@ bool Palabra::existePalabraEnPrecedencias(string unString){
 /*
  * Publicos
  */
-Palabra::Palabra(){
-	//No deberia llamarse nunca.
-}
-
 
 /*
  * Apariciones en 0 porque se incrementa automaticamente al agregar
@@ -65,23 +61,26 @@ Mapa Palabra::getPrecedencias(){
  * Al agregarle una nueva precedencia a la palabra asume que tiene
  * que haber aparecido en el texto, por lo que le aumento el contador
  * a la propia palabra.
+ * Chequear que tenga length 1 al menos para evitar que se agregue algun espacio.
  */
 void Palabra::agregarPrecedencia(string unString){
-	this->incrementarApariciones();
+	if (unString.length() > 0){
+		this->incrementarApariciones();
 
-	//Precedencia en lower case
-	transform(unString.begin(), unString.end(), unString.begin(), ::tolower);
+		//Precedencia en lower case
+		transform(unString.begin(), unString.end(), unString.begin(), ::tolower);
 
-	if (this->existePalabraEnPrecedencias(unString)){
-		this->precedencias[unString] ++;
-	} else {
-		this->precedencias[unString] = 1;
+		if (this->existePalabraEnPrecedencias(unString)){
+			this->precedencias[unString] ++;
+		} else {
+			this->precedencias[unString] = 1;
+		}
 	}
 }
 
 void Palabra::mostrarPrecedencias(){
 	IteradorMapa it = this->getIteradorMapa();
-	std::cout << this->nombre <<" = ";
+	std::cout << this->nombre <<"["<< this->getApariciones()<<" apariciones] = ";
 	for (it = this->precedencias.begin(); it!=this->precedencias.end(); ++it)
 			std::cout << "{" << it->first << " : " << it->second <<"}"<< "  ";
 	std::cout << "\n";

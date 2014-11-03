@@ -38,7 +38,6 @@ private:
 	bool existePalabraEnPrecedencias(string unString);
 
 public:
-	Palabra();
 	Palabra(string unString);
 	virtual ~Palabra();
 	string getNombre();
