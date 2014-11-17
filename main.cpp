@@ -11,6 +11,7 @@
 #include <boost/algorithm/string.hpp>
 #include <iostream>
 #include <vector>
+#include "Tokenizer.h"
 
 using namespace std;
 
@@ -108,41 +109,15 @@ int main(int argc, char **argv) {
 	contenedor->getPalabra("perro")->mostrarPrecedencias();
 
 
-	/*   PRUEBA DE FUEGO
-	 *
-	 *   palabra arranca en +1 y se incrementa en el for
-	 *   precedencias en 0 y se incrementa MANUALMENTE.
-	 */
-	cout<<"Prueba de Fuego." <<endl;
 
 	/*
-	 * Cosas de la libreria de boost. Splitea todas las palabras del string y las deja
-	 * en el el vector en el mismo orden en el que aparecieron.
+	 *
+	 * Prueba de fuego
+	 *
+	 *
 	 */
-	typedef vector< string > split_vector_type;
-
-	split_vector_type SplitVec;
-
-	//Is Any Of: caracteres por los que splitea palabra.
-	boost::split(SplitVec, palabras, boost::is_any_of(" .,?!\"-"), boost::token_compress_on);
-
-	contenedor = new ContenedorDePalabras();
-
-	vector<string>::iterator precedencia = SplitVec.begin();
-    for (vector<string>::iterator palabra = SplitVec.begin() +1; palabra != SplitVec.end(); ++palabra) {
-
-    	if (contenedor->existePalabra(*palabra)){
-    		contenedor->getPalabra(*palabra)->agregarPrecedencia(*precedencia);
-    	} else {
-    		Palabra *palabraPorAgregar = new Palabra(*palabra);
-    		palabraPorAgregar->agregarPrecedencia(*precedencia);
-    		contenedor->agregarPalabra(palabraPorAgregar);
-    	}
-
-    	precedencia ++;
-    }
-
-    contenedor->getPalabra("my")->mostrarPrecedencias();
+	Tokenizer::tokenize(contenedor, palabras);
+	contenedor->getPalabra("the")->mostrarPrecedencias();
 
 
 	Foo *unFoo = new Foo();
