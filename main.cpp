@@ -7,6 +7,7 @@
 #include "Foo.h"
 #include "LectorDeArchivo.h"
 #include "ContenedorDePalabras.h"
+#include "Analizador.h"
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string.hpp>
 #include <iostream>
@@ -47,7 +48,8 @@ int main(int argc, char **argv) {
 	 * Practice.txt es un archivo de prueba, tamanio bastante menor que el set posta
 	 *
 	 */
-	string palabras = LectorDeArchivo::leerArchivo("practice.txt");
+	/*
+	string palabras = LectorDeArchivo::leerArchivo("trunk/practice.txt");
 	cout << "Longitud del string: " << palabras.length() << endl;
 
 	//Deberia mostrar "The Adventure", que son los primeros 13 digitos del txt
@@ -55,11 +57,12 @@ int main(int argc, char **argv) {
 		cout << palabras[i];
 	}
 	cout << endl;
-
+	*/
 
     /*
      * Pruebas sobre la clase PALABRA.
      */
+	/*
 	Palabra *unaPalabra = new Palabra("PERRO");
 	unaPalabra->agregarPrecedencia("mi");
 
@@ -86,11 +89,13 @@ int main(int argc, char **argv) {
 	otraPalabra->agregarPrecedencia("mis");
 
 	otraPalabra->mostrarPrecedencias();
+	*/
 
 
 	/*
 	 * Se agrega bien sin importar los uppercases y eso.
 	 */
+	/*
 	cout <<"Pruebas de Contendor:" << endl;
 	ContenedorDePalabras *contenedor = new ContenedorDePalabras();
 
@@ -107,6 +112,7 @@ int main(int argc, char **argv) {
 	}
 
 	contenedor->getPalabra("perro")->mostrarPrecedencias();
+	*/
 
 
 
@@ -116,11 +122,25 @@ int main(int argc, char **argv) {
 	 *
 	 *
 	 */
-	Tokenizer::tokenize(contenedor, palabras);
+	/*Tokenizer::tokenize(contenedor, palabras);
 	contenedor->getPalabra("the")->mostrarPrecedencias();
 
 
 	Foo *unFoo = new Foo();
-	unFoo->doFoo();
+	unFoo->doFoo();*/
+
+
+
+
+
+
+	string palabras = LectorDeArchivo::leerArchivo("trunk/train.txt");
+	ContenedorDePalabras *diccionario = new ContenedorDePalabras();
+	Tokenizer::tokenize(diccionario, palabras);
+
+	Analizador* analizador = new Analizador(diccionario);
+	analizador->analizar("trunk/test.txt");
+
+
 	return 0;
 }
