@@ -24,7 +24,8 @@ void ContenedorDePalabras::agregarPalabra(Palabra *unaPalabra){
 
 Palabra* ContenedorDePalabras::getPalabra(string unString){
 	transform(unString.begin(), unString.end(), unString.begin(), ::tolower);
-	return this->lista[unString];
+	//return this->lista[unString];
+	return this->lista.at(unString);
 }
 
 ContenedorDePalabras::~ContenedorDePalabras() {

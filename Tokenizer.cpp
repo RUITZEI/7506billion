@@ -29,10 +29,23 @@ void Tokenizer::tokenize(ContenedorDePalabras *unContenedor, const string &unStr
 	//Por cada oracion, separo la misma en palabras.
 	for (size_t i = 0; i < vectorOraciones.size(); i++) {
 		boost::split(palabrasDeOraciones, vectorOraciones[i], boost::is_any_of(" -!?\"\n\t,"), boost::token_compress_on);
-
 		vector<string>::iterator precedencia = palabrasDeOraciones.begin();
 
 		if ((palabrasDeOraciones.size() > 1) ){
+			/*
+			 * Si hay mas de una palabra en la oracion, debo agregar la palabra 'ENDL' con precedencia
+			 * 'ENDL' con precedencia la ultima palabra de la oracion.
+			 */
+			vector<string>::iterator palabraFinal = palabrasDeOraciones.end() -1;
+			if (unContenedor->existePalabra("ENDL")){
+				unContenedor->getPalabra("ENDL")->agregarPrecedencia(*palabraFinal);
+				//cout<<"existia la palabra en el diccionario"<<endl;
+			} else {
+				Palabra *palabraPorAgregar = new Palabra("ENDL");
+				palabraPorAgregar->agregarPrecedencia(*palabraFinal);
+				unContenedor->agregarPalabra(palabraPorAgregar);
+			}
+
 			//Si no es la primer iteracion siempre me deja un espacio en blanco en la primer posicion.
 			if (!i == 0){
 				vector<string>::iterator precedenciaAux = precedencia + 1;

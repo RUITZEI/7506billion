@@ -134,12 +134,16 @@ int main(int argc, char **argv) {
 
 
 
-	string palabras = LectorDeArchivo::leerArchivo("trunk/train.txt");
+	//string palabras = LectorDeArchivo::leerArchivo("train.txt");
+	string palabras = LectorDeArchivo::leerArchivo("thirty_years_a_slave");
 	ContenedorDePalabras *diccionario = new ContenedorDePalabras();
 	Tokenizer::tokenize(diccionario, palabras);
 
+	diccionario->getPalabra("endl")->mostrarPrecedencias();
+
 	Analizador* analizador = new Analizador(diccionario);
-	analizador->analizar("trunk/test.txt");
+	//analizador->analizar("test.txt");
+	analizador->analizar("advanced_test.txt");
 
 
 	return 0;
