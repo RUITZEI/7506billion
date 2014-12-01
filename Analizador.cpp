@@ -48,11 +48,11 @@ void Analizador::analizarOracion(string oracion)
 
 	//Obtengo las palabras de la oracion
 	split_vector_type palabrasDeOraciones;
-	boost::split(palabrasDeOraciones, oracion, boost::is_any_of(" -!?\"\n\t,"), boost::token_compress_on);
+	boost::split(palabrasDeOraciones, oracion, boost::is_any_of(" -!?\"\n\t,."), boost::token_compress_on);
 	int contadorPalabras = 0;
 	//TODO: Necesito que se agregue los endl al contenedor de palabras con sus precedencias, para poder resolver los casos que
 	//la palabra que falte sea la ultima
-	//palabrasDeOraciones.push_back("endl");
+	palabrasDeOraciones.push_back("endl");
 
 	for (vector<string>::iterator palabra = palabrasDeOraciones.begin(); ((palabra != palabrasDeOraciones.end()) && !faltaPalabra); ++palabra)
 	{
@@ -81,10 +81,10 @@ void Analizador::analizarOracion(string oracion)
 				string oracionSalida = obtenerOracion(palabraActual, precedenciaActual, palabrasDeOraciones, contadorPalabras);
 				cout << endl << endl << "ORACION ORIGINAL:" << oracion << endl << "ORACION SALIDA:" << oracionSalida << endl;
 			}
-		}
 
-		precedenciaActual = *palabra;
-		contadorPalabras++;
+			precedenciaActual = *palabra;
+			contadorPalabras++;
+		}
 	}
 
 	if (!faltaPalabra)
@@ -113,27 +113,30 @@ string Analizador::obtenerOracion(Palabra* palabraActual, string precedenciaActu
 			//Esta es la probabilidad que esta palabra candidata pase como precedencia de palabraActual
 			double probabilidadActual = (*precedencia).second / (double)palabraActual->getApariciones();
 
-			Palabra* precedenciaCandidata = diccionario->getPalabra((*precedencia).first);
-			double probabilidadPrec = analizarPrecedencias(precedenciaCandidata, precedenciaActual);
-			//Si no encuento entre las precedencias de la candidata a precedenciaActual => probabilidadPrec = 0
-			if (probabilidadPrec > 0)
+			if (diccionario->existePalabra((*precedencia).first))
 			{
-				//Si la encuentro, multiplico las dos probas y me voy quedando con la candidata de > proba
-				faltaCandidata = false;
-				if ((probabilidadActual * probabilidadPrec) >= probabilidadCandidata)
+				Palabra* precedenciaCandidata = diccionario->getPalabra((*precedencia).first);
+				double probabilidadPrec = analizarPrecedencias(precedenciaCandidata, precedenciaActual);
+				//Si no encuento entre las precedencias de la candidata a precedenciaActual => probabilidadPrec = 0
+				if (probabilidadPrec > 0)
 				{
-					probabilidadCandidata = probabilidadActual * probabilidadPrec;
-					palabraCandidata = (*precedencia).first;
+					//Si la encuentro, multiplico las dos probas y me voy quedando con la candidata de > proba
+					faltaCandidata = false;
+					if ((probabilidadActual * probabilidadPrec) >= probabilidadCandidata)
+					{
+						probabilidadCandidata = probabilidadActual * probabilidadPrec;
+						palabraCandidata = (*precedencia).first;
+					}
 				}
-			}
-			else
-			{
-				//Si no la encuentro, me quedo en otra variable con la candidata de > probabilidadActual (para proteger
-				//el caso que no encontremos ninguna candidata a llenar la palabra que falta)
-				if (probabilidadActual >= probabilidadCandidataError)
+				else
 				{
-					probabilidadCandidataError = probabilidadActual;
-					palabraCandidataError = (*precedencia).first;
+					//Si no la encuentro, me quedo en otra variable con la candidata de > probabilidadActual (para proteger
+					//el caso que no encontremos ninguna candidata a llenar la palabra que falta)
+					if (probabilidadActual >= probabilidadCandidataError)
+					{
+						probabilidadCandidataError = probabilidadActual;
+						palabraCandidataError = (*precedencia).first;
+					}
 				}
 			}
 		}
@@ -155,6 +158,7 @@ double Analizador::analizarPrecedencias(Palabra* palabra, string precedencia)
 {
 	Mapa precedencias = palabra->getPrecedencias();
 
+	boost::to_lower(precedencia);
 	Mapa::iterator itPrecedencia = precedencias.find(precedencia);
 	if (itPrecedencia != precedencias.end())
 		return itPrecedencia->second / (double)palabra->getApariciones();
@@ -173,14 +177,20 @@ string Analizador::armarOracion(split_vector_type palabras, string palabraInsert
 			if (contadorPalabras > 0)
 				salida.append(" ");
 			salida.append(palabraInsertar);
-			salida.append(" ");
-			salida.append(*palabra);
+			if (*palabra != "endl")
+			{
+				salida.append(" ");
+				salida.append(*palabra);
+			}
 		}
 		else
 		{
-			if (contadorPalabras > 0)
-				salida.append(" ");
-			salida.append(*palabra);
+			if (*palabra != "endl")
+			{
+				if (contadorPalabras > 0)
+					salida.append(" ");
+				salida.append(*palabra);
+			}
 		}
 		contadorPalabras++;
 	}
