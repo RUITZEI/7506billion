@@ -11,21 +11,8 @@
 #include "Tokenizer.h"
 
 /*
- * Dada una ruta al archivo de texto, copia todo el contenido en un String.
+ * Leer archivo por bytes.
  */
-string LectorDeArchivo::leerArchivo(const char *filename){
-  std::ifstream in(filename, std::ios::in | std::ios::binary);
-  if (in){
-    std::string contents;
-    in.seekg(0, std::ios::end);
-    contents.resize(in.tellg());
-    in.seekg(0, std::ios::beg);
-    in.read(&contents[0], contents.size());
-    in.close();
-    return(contents);
-  }
-  throw(errno);
-}
 void LectorDeArchivo::leerArchivoAux(const char* filename, ContenedorDePalabras* diccionario){
 	FILE * pFile;
 	long lSize;
@@ -58,7 +45,7 @@ void LectorDeArchivo::leerArchivoAux(const char* filename, ContenedorDePalabras*
 		result = fread (buffer,limiteInferior,limiteSuperior,pFile);
 		//if (result != lSize) {fputs ("Reading error",stderr); exit (3);}
 
-		Tokenizer::tokenizeAux(diccionario, buffer);
+		//Tokenizer::tokenizeAux(diccionario, buffer);
 		free (buffer);
 		cout << "Buffer freed" << endl;
 		limiteInferior += limiteSuperior;
@@ -85,11 +72,12 @@ void LectorDeArchivo::leerArchivoAux(const char* filename, ContenedorDePalabras*
 	//free (buffer);
 
 	//return buffer;
-
 }
 
-
-void LectorDeArchivo::leerArchivoAuxAux(const char* filename, ContenedorDePalabras* diccionario){
+/*
+ * Leo archivo por lineas, voy tokenizando y cargando la estructura.
+ */
+void LectorDeArchivo::leerArchivo(const char* filename, ContenedorDePalabras* diccionario){
 	FILE * pFile;
 	long lSize;
 	size_t result;
@@ -109,18 +97,16 @@ void LectorDeArchivo::leerArchivoAuxAux(const char* filename, ContenedorDePalabr
 
 	std::ifstream infile(filename);
 
-	cout << "Antes del while" << endl;
 
-	//Modificar este para leer de a X oraciones.
-	//*while (std::getline(infile, line) && (i<500000))
-	while (std::getline(infile, line))
+	/* Modificar el de arriba para leer de a X oraciones.
+	 * Usar el de abajo para leer todo el texto.
+	 */
+	while (std::getline(infile, line) && (i<400000))
+	//while (std::getline(infile, line))
 	{
-		//cout << line<< endl;
-		Tokenizer::tokenizeAux(diccionario, line);
+		cout << line<< endl;
+		Tokenizer::tokenize(diccionario, line);
 		i++;
-
-		//if (i==1) exit(0);
-		// process pair (a,b)
 	}
 
 	cout << "Proceso OK!" << endl;

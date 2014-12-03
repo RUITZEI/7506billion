@@ -25,8 +25,6 @@ public:
 	 * de cada palabra.
 	 */
 	static void tokenize(ContenedorDePalabras *unContenedor, const string &unString);
-	static void tokenizeAux(ContenedorDePalabras *unContenedor, const string &unString);
-
 };
 
 

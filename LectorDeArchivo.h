@@ -25,9 +25,9 @@ private:
 	const char* archivo;
 public:
 	LectorDeArchivo();
-	static string leerArchivo(const char *filename);
+	static void leerArchivo(const char* filename, ContenedorDePalabras *diccionario);
 	static void leerArchivoAux(const char* filename, ContenedorDePalabras *diccionario);
-	static void leerArchivoAuxAux(const char* filename, ContenedorDePalabras *diccionario);
+
 	virtual ~LectorDeArchivo();
 };
 
