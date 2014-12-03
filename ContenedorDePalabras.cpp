@@ -15,7 +15,7 @@ ContenedorDePalabras::ContenedorDePalabras() {
 
 bool ContenedorDePalabras::existePalabra(string unString){
 	transform(unString.begin(), unString.end(), unString.begin(), ::tolower);
-	return (this->lista.find(unString) != this->lista.end());
+	return (this->lista.count(unString) > 0);
 }
 
 void ContenedorDePalabras::agregarPalabra(Palabra *unaPalabra){

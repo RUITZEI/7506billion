@@ -14,6 +14,7 @@ using namespace std;
 #include <iostream>
 #include <string>
 #include <cerrno>
+#include "ContenedorDePalabras.h"
 
 #ifndef LECTORDEARCHIVO_H_
 #define LECTORDEARCHIVO_H_
@@ -25,6 +26,8 @@ private:
 public:
 	LectorDeArchivo();
 	static string leerArchivo(const char *filename);
+	static void leerArchivoAux(const char* filename, ContenedorDePalabras *diccionario);
+	static void leerArchivoAuxAux(const char* filename, ContenedorDePalabras *diccionario);
 	virtual ~LectorDeArchivo();
 };
 

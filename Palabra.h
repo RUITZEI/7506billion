@@ -17,11 +17,12 @@
 #include <map>
 #include <string.h>
 #include <utility>
+#include <boost/unordered_map.hpp>
 
 using namespace std;
 
-typedef map<string, int> Mapa;
-typedef map<string, int>::iterator IteradorMapa;
+typedef boost::unordered_map<string, int> Mapa;
+typedef boost::unordered_map<string, int>::const_iterator IteradorMapa;
 
 
 #ifndef PALABRA_H_
@@ -30,19 +31,19 @@ typedef map<string, int>::iterator IteradorMapa;
 class Palabra {
 
 private:
-	string nombre;
-	int apariciones;
 	Mapa precedencias;
 	IteradorMapa iterador;
 	IteradorMapa getIteradorMapa();
 	bool existePalabraEnPrecedencias(string unString);
 
 public:
+	string nombre;
+	int apariciones;
 	Palabra(string unString);
 	virtual ~Palabra();
 	string getNombre();
 	int getApariciones();
-	Mapa getPrecedencias();
+	Mapa& getPrecedencias();
 	void incrementarApariciones();
 	//Se le pasa directamente el string, no confundir con la clase Palabra.
 	void agregarPrecedencia(string unString);

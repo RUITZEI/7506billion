@@ -7,12 +7,13 @@
 
 #include "Palabra.h"
 #include <algorithm>
+#include <boost/unordered_map.hpp>
 
 
 using namespace std;
 
 //Map -> Busqueda log N
-typedef map<string, Palabra*> Lista;
+typedef boost::unordered_map<string, Palabra*> Lista;
 
 
 #ifndef CONTENEDORDEPALABRAS_H_

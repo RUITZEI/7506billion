@@ -134,16 +134,28 @@ int main(int argc, char **argv) {
 
 
 
-	//string palabras = LectorDeArchivo::leerArchivo("train.txt");
-	string palabras = LectorDeArchivo::leerArchivo("thirty_years_a_slave");
+	//char* palabras = LectorDeArchivo::leerArchivoAux("train.txt");
+	//string palabras = LectorDeArchivo::leerArchivo("thirty_years_a_slave");
+	//char* palabras = LectorDeArchivo::leerArchivoAux("thirty_years_a_slave");
+	//char* palabras = LectorDeArchivo::leerArchivoAux("/media/manuel/FE64EB6864EB225F/Downloads/train_v2.txt/train_v2.txt");
 	ContenedorDePalabras *diccionario = new ContenedorDePalabras();
-	Tokenizer::tokenize(diccionario, palabras);
+	LectorDeArchivo::leerArchivoAuxAux("/media/manuel/FE64EB6864EB225F/Downloads/train_v2.txt/train_v2.txt", diccionario);
 
-	diccionario->getPalabra("endl")->mostrarPrecedencias();
+	//char* unChar = "The U.S. Centers for Disease Control and Prevention initially advised school systems to close if outbreaks occurred , then reversed itself , saying the apparent mildness of the virus meant most schools and day care centers should stay open , even if they had confirmed cases of swine flu .";
+	//char* unChar = "When Ms. Winfrey invited Suzanne Somers to share her controversial views about bio-identical hormone treatment on her syndicated show in 2009 , it won Ms. Winfrey a rare dollop of unflattering press , including a Newsweek cover story titled \" Crazy Talk : Oprah , Wacky Cures & You . \"";
+	//Tokenizer::tokenizeAux(diccionario, unChar);
+	//Tokenizer::tokenizeAux(diccionario, palabras);
 
-	Analizador* analizador = new Analizador(diccionario);
+	//diccionario->getPalabra("U.S")->mostrarPrecedencias();
+	diccionario->getPalabra("the")->mostrarPrecedencias();
+	//diccionario->getPalabra("my")->mostrarPrecedencias();
+	//diccionario->getPalabra("is")->mostrarPrecedencias();
+
+	//diccionario->getPalabra("U.S.")->mostrarPrecedencias();
+
+	//Analizador* analizador = new Analizador(diccionario);
 	//analizador->analizar("test.txt");
-	analizador->analizar("advanced_test.txt");
+	//analizador->analizar("advanced_test.txt");
 
 
 	return 0;
