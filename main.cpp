@@ -140,13 +140,13 @@ int main(int argc, char **argv) {
 	LectorDeArchivo::leerArchivo("/media/manuel/FE64EB6864EB225F/Downloads/train_v2.txt/train_v2.txt", diccionario);
 
 
-	cout << "Antes del Analizador."<< endl;
+	cout << "Antes del Proceso Largo."<< endl;
 	//diccionario->getPalabra("ENDL")->mostrarPrecedencias();
 	//diccionario->getPalabra(".")->mostrarPrecedencias();
-	//diccionario->eliminarPalabra(".");
-	//diccionario->eliminarPrecedencia(".");
+	diccionario->eliminarPalabra(".");
+	diccionario->eliminarPrecedencia(".");
 
-	//cout << "Despues del proceso Largo."<< endl;
+	cout << "Despues del proceso Largo."<< endl;
 	//diccionario->getPalabra(".")->mostrarPrecedencias();
 	//diccionario->getPalabra("ENDL")->mostrarPrecedencias();
 
@@ -154,6 +154,8 @@ int main(int argc, char **argv) {
 	Analizador* analizador = new Analizador(diccionario);
 	//analizador->analizar("test.txt");
 	analizador->analizar("advanced_test.txt");
+
+	cout << "Depsues de analizar" << endl;
 
 
 

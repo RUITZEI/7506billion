@@ -40,7 +40,7 @@ void ContenedorDePalabras::eliminarPalabra(string unString){
 void ContenedorDePalabras::eliminarPrecedencia(string unString){
 	typedef boost::unordered_map<string, Palabra*>::const_iterator IteradorContenedor;
 
-	for(IteradorContenedor it = this->lista.begin(); it != this->lista.end(); it++){
+	for(IteradorContenedor it = this->lista.begin(); it != this->lista.end(); ++it){
 		it->second->eliminarPrecedencia(unString);
 	}
 
