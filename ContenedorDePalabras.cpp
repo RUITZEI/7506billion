@@ -15,7 +15,7 @@ ContenedorDePalabras::ContenedorDePalabras() {
 
 bool ContenedorDePalabras::existePalabra(string unString){
 	transform(unString.begin(), unString.end(), unString.begin(), ::tolower);
-	return (this->lista.count(unString) > 0);
+	return (this->lista.find(unString) != this->lista.end());
 }
 
 void ContenedorDePalabras::agregarPalabra(Palabra *unaPalabra){
@@ -30,5 +30,19 @@ Palabra* ContenedorDePalabras::getPalabra(string unString){
 
 ContenedorDePalabras::~ContenedorDePalabras() {
 	// TODO Auto-generated destructor stub
+}
+
+//Elimina una palabra de la lista. NO CHEQUEA QUE EXISTA.
+void ContenedorDePalabras::eliminarPalabra(string unString){
+	this->lista.erase(unString);
+}
+
+void ContenedorDePalabras::eliminarPrecedencia(string unString){
+	typedef boost::unordered_map<string, Palabra*>::const_iterator IteradorContenedor;
+
+	for(IteradorContenedor it = this->lista.begin(); it != this->lista.end(); it++){
+		it->second->eliminarPrecedencia(unString);
+	}
+
 }
 

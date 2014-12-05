@@ -51,6 +51,8 @@ public:
 	//Imprime por consola las precedencias como si fuera un {} de python.
 	void mostrarPrecedencias();
 
+	void eliminarPrecedencia(string unString);
+
 
 };
 

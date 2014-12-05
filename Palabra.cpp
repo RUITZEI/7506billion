@@ -18,7 +18,7 @@ IteradorMapa Palabra::getIteradorMapa(){
  * El metodo FIND de MAP garantiza que la busqueda sea log(N).
  */
 bool Palabra::existePalabraEnPrecedencias(string unString){
-	return (this->getPrecedencias().count(unString) > 0);
+	return (this->getPrecedencias().find(unString) != this->getPrecedencias().end());
 }
 
 
@@ -97,6 +97,14 @@ std::size_t hash_value(Palabra const& p)
 bool operator==(const Palabra &p, const Palabra &p1)
 {
   return p.nombre == p1.nombre;
+}
+
+void Palabra::eliminarPrecedencia(string unString){
+	if (this -> existePalabraEnPrecedencias(unString)){
+		this->apariciones -= this->precedencias[unString];
+		this->getPrecedencias().erase(unString);
+
+	}
 }
 
 

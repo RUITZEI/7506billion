@@ -35,6 +35,8 @@ public:
 	void agregarPalabra(Palabra* unaPalabra);
 	bool existePalabra(string unString);
 	Palabra* getPalabra(string unString);
+	void eliminarPalabra(string unString);
+	void eliminarPrecedencia(string unString);
 
 };
 

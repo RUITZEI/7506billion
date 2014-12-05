@@ -33,23 +33,23 @@ void LectorDeArchivo::leerArchivoAux(const char* filename, ContenedorDePalabras*
 	// copy the file into the buffer:
 	//result = fread (buffer,1,lSize,pFile);
 	size_t limiteInferior = 1;
-	size_t limiteSuperior = 1000000000;
+	size_t limiteSuperior = 500000000;
 
 	for (int i = 0; i<1; i++){
 		cout << "Pasada = " << i << endl;
 
 		// allocate memory to contain the whole file:
-		buffer = (char*) malloc (sizeof(char)*1000000000);
+		buffer = (char*) malloc (sizeof(char)*500000000);
 		if (buffer == NULL) {fputs ("Memory error",stderr); exit (2);}
 
 		result = fread (buffer,limiteInferior,limiteSuperior,pFile);
 		//if (result != lSize) {fputs ("Reading error",stderr); exit (3);}
 
-		//Tokenizer::tokenizeAux(diccionario, buffer);
+		Tokenizer::tokenize(diccionario, buffer);
 		free (buffer);
 		cout << "Buffer freed" << endl;
 		limiteInferior += limiteSuperior;
-		limiteSuperior += 1000000000;
+		limiteSuperior += 500000000;
 	}
 
 	cout<< "Chau FOR grande"<< endl;
@@ -96,20 +96,23 @@ void LectorDeArchivo::leerArchivo(const char* filename, ContenedorDePalabras* di
 	fclose(pFile);
 
 	std::ifstream infile(filename);
-
+	int numberOfLines = 30301028;
 
 	/* Modificar el de arriba para leer de a X oraciones.
 	 * Usar el de abajo para leer todo el texto.
 	 */
-	while (std::getline(infile, line) && (i<400000))
-	//while (std::getline(infile, line))
+	//while (std::getline(infile, line) && (i< 2000))
+	while (std::getline(infile, line))
 	{
-		cout << line<< endl;
-		Tokenizer::tokenize(diccionario, line);
+		//cout << line<< endl;
+		//cout << line.length() << endl;
+		Tokenizer::tokenizeAux(diccionario, line);
 		i++;
 	}
 
-	cout << "Proceso OK!" << endl;
+	//string a = "% & * # !";
+	//Tokenizer::tokenize(diccionario, a);
+	cout << i << endl;
 }
 
 LectorDeArchivo::LectorDeArchivo() {
