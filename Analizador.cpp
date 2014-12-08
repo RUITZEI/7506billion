@@ -36,6 +36,7 @@ void Analizador::analizar(string nombreArchEntrada, string nombreArchSalida)
 			{
 				salida << cont_lineas << ",\"" << analizarOracion(linea) << "\"\n";
 				cont_lineas++;
+				cout << cont_lineas << endl;
 			}
 			else cont++;
 		}
@@ -73,7 +74,7 @@ string Analizador::analizarOracion(string linea)
 	//la palabra que falte sea la ultima
 	palabrasDeOraciones.push_back("endl");
 
-	for (vector<string>::iterator palabra = palabrasDeOraciones.begin(); ((palabra != palabrasDeOraciones.end()) && !faltaPalabra); ++palabra)
+	for (vector<string>::const_iterator palabra = palabrasDeOraciones.begin(); ((palabra != palabrasDeOraciones.end()) && !faltaPalabra); ++palabra)
 	{
 		if (*palabra == "endl")
 			contadorPalabrasNoEncontradas--;
@@ -119,7 +120,7 @@ string Analizador::analizarOracion(string linea)
 	return salida;
 }
 
-string Analizador::obtenerOracion(Palabra* palabraActual, string precedenciaActual, split_vector_type palabrasDeOraciones, int pos)
+string Analizador::obtenerOracion(Palabra* palabraActual, string precedenciaActual, split_vector_type& palabrasDeOraciones, int pos)
 {
 	string salida = "";
 
@@ -130,17 +131,19 @@ string Analizador::obtenerOracion(Palabra* palabraActual, string precedenciaActu
 	string palabraCandidataError = "";
 	bool faltaCandidata = true;
 
-	Mapa precedencias = palabraActual->getPrecedencias();
-	for (Mapa::iterator precedencia = precedencias.begin(); precedencia != precedencias.end(); ++precedencia)
+	IteradorMapa it = palabraActual->getIteradorMapa();
+
+
+	for (it = palabraActual->getPrecedencias().begin(); it != palabraActual->getPrecedencias().end(); ++it)
 	{
-		if ((*precedencia).first != "endl")
+		if (it->first != "endl")
 		{
 			//Esta es la probabilidad que esta palabra candidata pase como precedencia de palabraActual
-			double probabilidadActual = (*precedencia).second / (double)palabraActual->getApariciones();
+			double probabilidadActual = it->second / (double)palabraActual->getApariciones();
 
-			if (diccionario->existePalabra((*precedencia).first))
+			if (diccionario->existePalabra(it->first))
 			{
-				Palabra* precedenciaCandidata = diccionario->getPalabra((*precedencia).first);
+				Palabra* precedenciaCandidata = diccionario->getPalabra(it->first);
 				double probabilidadPrec = analizarPrecedencias(precedenciaCandidata, precedenciaActual);
 				//Si no encuento entre las precedencias de la candidata a precedenciaActual => probabilidadPrec = 0
 				if (probabilidadPrec > 0)
@@ -150,7 +153,7 @@ string Analizador::obtenerOracion(Palabra* palabraActual, string precedenciaActu
 					if ((probabilidadActual * probabilidadPrec) >= probabilidadCandidata)
 					{
 						probabilidadCandidata = probabilidadActual * probabilidadPrec;
-						palabraCandidata = (*precedencia).first;
+						palabraCandidata = it->first;
 					}
 				}
 				else
@@ -160,7 +163,7 @@ string Analizador::obtenerOracion(Palabra* palabraActual, string precedenciaActu
 					if (probabilidadActual >= probabilidadCandidataError)
 					{
 						probabilidadCandidataError = probabilidadActual;
-						palabraCandidataError = (*precedencia).first;
+						palabraCandidataError = it->first;
 					}
 				}
 			}
@@ -181,21 +184,17 @@ string Analizador::obtenerOracion(Palabra* palabraActual, string precedenciaActu
  */
 double Analizador::analizarPrecedencias(Palabra* palabra, string precedencia)
 {
-	Mapa precedencias = palabra->getPrecedencias();
-
-	boost::to_lower(precedencia);
-	Mapa::iterator itPrecedencia = precedencias.find(precedencia);
-	if (itPrecedencia != precedencias.end())
-		return itPrecedencia->second / (double)palabra->getApariciones();
+	if (palabra->existePalabraEnPrecedencias(precedencia))
+		return palabra->getPrecedencias()[precedencia] / (double)palabra->getApariciones();
 	else return 0;
 }
 
-string Analizador::armarOracion(split_vector_type palabras, string palabraInsertar, int posInsertar)
+string Analizador::armarOracion(split_vector_type& palabras, string palabraInsertar, int posInsertar)
 {
 	string salida = "";
 	int contadorPalabras = 0;
 
-	for (vector<string>::iterator palabra = palabras.begin(); (palabra != palabras.end()); ++palabra)
+	for (vector<string>::const_iterator palabra = palabras.begin(); (palabra != palabras.end()); ++palabra)
 	{
 		if (contadorPalabras == posInsertar)
 		{

@@ -12,7 +12,7 @@
 /*
  * PRIVADOS !!!
  */
-IteradorMapa Palabra::getIteradorMapa(){
+IteradorMapa& Palabra::getIteradorMapa(){
 	return this->iterador;
 }
 /*

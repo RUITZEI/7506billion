@@ -33,18 +33,21 @@ class Palabra {
 private:
 	Mapa precedencias;
 	IteradorMapa iterador;
-	IteradorMapa getIteradorMapa();
-	bool existePalabraEnPrecedencias(string unString);
+
+
 
 public:
 	string nombre;
 	int apariciones;
 	Palabra(string unString);
+	IteradorMapa& getIteradorMapa();
 	virtual ~Palabra();
 	string getNombre();
 	int getApariciones();
 	Mapa& getPrecedencias();
 	void incrementarApariciones();
+
+	bool existePalabraEnPrecedencias(string unString);
 	//Se le pasa directamente el string, no confundir con la clase Palabra.
 	void agregarPrecedencia(string unString);
 
