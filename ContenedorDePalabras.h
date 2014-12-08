@@ -37,6 +37,7 @@ public:
 	Palabra* getPalabra(string unString);
 	void eliminarPalabra(string unString);
 	void eliminarPrecedencia(string unString);
+	Lista& getListaDePalabras();
 
 };
 

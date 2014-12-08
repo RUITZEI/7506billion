@@ -43,6 +43,9 @@ void ContenedorDePalabras::eliminarPrecedencia(string unString){
 	for(IteradorContenedor it = this->lista.begin(); it != this->lista.end(); ++it){
 		it->second->eliminarPrecedencia(unString);
 	}
+}
 
+Lista& ContenedorDePalabras::getListaDePalabras(){
+	return this->lista;
 }
 

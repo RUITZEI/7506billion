@@ -112,75 +112,67 @@ void Tokenizer::tokenize(ContenedorDePalabras *unContenedor, const string &unStr
 /*
  * Recibo de a 1 oracion esta vez...
  */
-void Tokenizer::tokenizeAux(ContenedorDePalabras *unContenedor, string &unString){
- typedef vector< string > split_vector_type;
+void Tokenizer::tokenizeAux(ContenedorDePalabras *unContenedor, string& unString){
+	typedef vector< string > split_vector_type;
 
- split_vector_type vectorOraciones;
- split_vector_type palabrasDeOracion;
+	split_vector_type vectorOraciones;
+	split_vector_type palabrasDeOracion;
 
- //cout << "antes del split" << endl;
+	//cout << "antes del split" << endl;
 
- //Separo todo el texto en oraciones.
- boost::trim_if(unString, boost::is_any_of(" ")); // could also use plain boost::trim
- boost::split(palabrasDeOracion, unString, boost::is_any_of(" ()!?\"\n\t,"), boost::token_compress_on);
- //cout << "despues del split" << endl;
+	//Separo todo el texto en oraciones.
+	boost::trim_if(unString, boost::is_any_of(" "));
+	boost::split(palabrasDeOracion, unString, boost::is_any_of(" ()!?\"\n\t,"), boost::token_compress_on);
 
- //Precedencia apunta a la primer palabra de la oracion.
- vector<string>::iterator precedencia = palabrasDeOracion.begin();
+	//Precedencia apunta a la primer palabra de la oracion.
+	vector<string>::iterator precedencia = palabrasDeOracion.begin();
 
- if ((palabrasDeOracion.size() > 1) ){
- /*
- * Si hay mas de una palabra en la oracion, debo agregar la palabra
- * 'ENDL' con precedencia la ultima palabra de la oracion.
- */
-	 vector<string>::iterator palabraFinal = palabrasDeOracion.end() -2;
-	 if((*palabraFinal).length() > 0){
-		 if (unContenedor->existePalabra("ENDL")){
-			 unContenedor->getPalabra("ENDL")->agregarPrecedencia(*palabraFinal);
-			 //cout<<*palabraFinal<< "-> ENDL" << endl;
-		 } else {
-			 Palabra *palabraPorAgregar = new Palabra("ENDL");
-			 palabraPorAgregar->agregarPrecedencia(*palabraFinal);
-			 unContenedor->agregarPalabra(palabraPorAgregar);
-			// cout<<*palabraFinal<< "-> ENDL" << endl;
+	if ((palabrasDeOracion.size() > 1) ){
+		/*
+		* Si hay mas de una palabra en la oracion, debo agregar la palabra
+		* 'ENDL' con precedencia la ultima palabra de la oracion.
+		*/
+		 vector<string>::iterator palabraFinal = palabrasDeOracion.end() -2;
+		 if((*palabraFinal).length() > 0){
+			 if (unContenedor->existePalabra("ENDL")){
+				 unContenedor->getPalabra("ENDL")->agregarPrecedencia(*palabraFinal);
+				 //cout<<*palabraFinal<< "-> ENDL" << endl;
+			 } else {
+				 Palabra *palabraPorAgregar = new Palabra("ENDL");
+				 palabraPorAgregar->agregarPrecedencia(*palabraFinal);
+				 unContenedor->agregarPalabra(palabraPorAgregar);
+				// cout<<*palabraFinal<< "-> ENDL" << endl;
+			 }
 		 }
-	 }
 
-	 if ((*precedencia).length() > 0){
-		 //A la primer palabra le agrego ENDL como precedencia.
-		 if (unContenedor->existePalabra(*precedencia)){
-			 unContenedor->getPalabra(*precedencia)->agregarPrecedencia("ENDL");
-			 //cout<<"existia la palabra en el diccionario"<<endl;
-	//		 cout<< "ENDL -> " <<*precedencia<< endl;
-		 } else {
-			 Palabra *palabraPorAgregar = new Palabra(*precedencia);
-			 palabraPorAgregar->agregarPrecedencia("ENDL");
-			 unContenedor->agregarPalabra(palabraPorAgregar);
-		//	 cout<< "ENDL -> " <<*precedencia<< endl;
+		 if ((*precedencia).length() > 0){
+			 //A la primer palabra le agrego ENDL como precedencia.
+			 if (unContenedor->existePalabra(*precedencia)){
+				 unContenedor->getPalabra(*precedencia)->agregarPrecedencia("ENDL");
+			 } else {
+				 Palabra *palabraPorAgregar = new Palabra(*precedencia);
+				 palabraPorAgregar->agregarPrecedencia("ENDL");
+				 unContenedor->agregarPalabra(palabraPorAgregar);
+			 }
 		 }
-	 }
 
- /*
- * Voy iterando por todas las palabras del Palabras De Oraciones
- * y le agrego sus precedencias como antes.
- */
- for (vector<string>::iterator palabra = palabrasDeOracion.begin() + 1; palabra != palabrasDeOracion.end() - 1; ++palabra) {
- //cout << "For Loop" << endl;
- if (unContenedor->existePalabra(*palabra)){
- unContenedor->getPalabra(*palabra)->agregarPrecedencia(*precedencia);
- //cout << *precedencia << "->" << *palabra <<endl;
- } else {
- Palabra *palabraPorAgregar = new Palabra(*palabra);
- palabraPorAgregar->agregarPrecedencia(*precedencia);
- unContenedor->agregarPalabra(palabraPorAgregar);
- //cout << *precedencia << "->" << *palabra <<endl;
- }
+		/*
+		* Voy iterando por todas las palabras del Palabras De Oraciones
+		* y le agrego sus precedencias como antes.
+		*/
+		for (vector<string>::iterator palabra = palabrasDeOracion.begin() + 1; palabra != palabrasDeOracion.end() - 1; ++palabra) {
+			if (unContenedor->existePalabra(*palabra)){
+				unContenedor->getPalabra(*palabra)->agregarPrecedencia(*precedencia);
+			} else {
+				Palabra *palabraPorAgregar = new Palabra(*palabra);
+				palabraPorAgregar->agregarPrecedencia(*precedencia);
+				unContenedor->agregarPalabra(palabraPorAgregar);
+			}
 
- precedencia ++;
- }
- }
+			precedencia ++;
+		}
+	}
 
- //cout << "Todo en orden"<< endl;
 }
 
 

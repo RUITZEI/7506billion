@@ -51,6 +51,22 @@ public:
 	//Imprime por consola las precedencias como si fuera un {} de python.
 	void mostrarPrecedencias();
 
+
+
+	/*
+	 * Metodos para serializar - deserializar.
+	 */
+
+	//Devuelve un string con las precedencias y cant de apariciones en formato CSV
+	string serializarPrecedencias();
+
+	//Hay que pasarle el offset de la palabra en el archivo de precedencias.
+	string serializarParaIndice(long offsetInicial, long bytesALeer);
+
+	void agregarPrecedencia(const string& unString, int cantidadDeApariciones);
+
+	Palabra(const string& unString, int cantidadDeApariciones);
+
 	void eliminarPrecedencia(string unString);
 
 

@@ -7,6 +7,7 @@
 
 #include "Palabra.h"
 #include <algorithm>
+#include <boost/lexical_cast.hpp>
 
 /*
  * PRIVADOS !!!
@@ -105,6 +106,50 @@ void Palabra::eliminarPrecedencia(string unString){
 		this->getPrecedencias().erase(unString);
 
 	}
+}
+
+string Palabra::serializarPrecedencias(){
+	IteradorMapa it = this->getIteradorMapa();
+	string output = "";
+
+	for (it = this->precedencias.begin(); it!=this->precedencias.end(); ++it){
+			output.append(it->first);
+			output.append(",");
+			output.append(boost::lexical_cast<std::string>(it->second));
+			output.append(",");
+	}
+
+	//Elimino la ultima coma.
+	output = output.substr(0,output.length()-1);
+
+	return output;
+}
+
+//Crea el string para introducir una linea en el archivo del indice. Falta agregarle el offset del archivo.
+string Palabra::serializarParaIndice(long offsetInicial, long bytesALeer){
+	string output = "";
+	output.append(this->nombre);
+	output.append(",");
+	output.append(boost::lexical_cast<std::string>(this->apariciones));
+	output.append(",");
+	output.append(boost::lexical_cast<std::string>(offsetInicial));
+	output.append(",");
+	output.append(boost::lexical_cast<std::string>(bytesALeer));
+
+	return output;
+}
+
+/*
+ * No realizo chequeos porque ya se que la palabra viene en minuscula y que no existe de antes.
+ * Tampoco incremento la cantidad de apariciones de la palabra pues ya la levanto del indicie.
+ */
+void Palabra::agregarPrecedencia(const string& unString, int cantidadDeApariciones){
+	this->precedencias[unString] = cantidadDeApariciones;
+}
+
+Palabra::Palabra(const string& unNombre, int cantidadDeApariciones) {
+	this->nombre = unNombre;
+	this->apariciones = cantidadDeApariciones;
 }
 
 

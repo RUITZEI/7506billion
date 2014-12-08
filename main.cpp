@@ -8,6 +8,7 @@
 #include "LectorDeArchivo.h"
 #include "ContenedorDePalabras.h"
 #include "Analizador.h"
+#include "Serializador.h"
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string.hpp>
 #include <iostream>
@@ -130,30 +131,41 @@ int main(int argc, char **argv) {
 	unFoo->doFoo();*/
 
 
-
-	//char* unChar = "The U.S. Centers for Disease Control and Prevention initially advised school systems to close if outbreaks occurred , then reversed itself , saying the apparent mildness of the virus meant most schools and day care centers should stay open , even if they had confirmed cases of swine flu .";
-		//char* unChar = "When Ms. Winfrey invited Suzanne Somers to share her controversial views about bio-identical hormone treatment on her syndicated show in 2009 , it won Ms. Winfrey a rare dollop of unflattering press , including a Newsweek cover story titled \" Crazy Talk : Oprah , Wacky Cures & You . \"";
-
+	//Cantidad de lineas del set de entreamiento, por si sirve.
 	int numberOfLines = 30301028;
 
 	ContenedorDePalabras *diccionario = new ContenedorDePalabras();
+
+	//Ruta al archivo de texto de 5 gigas, obviamente es una ruta local.
 	LectorDeArchivo::leerArchivo("/media/manuel/FE64EB6864EB225F/Downloads/train_v2.txt/train_v2.txt", diccionario);
 
 
-	cout << "Antes del Proceso Largo."<< endl;
-	//diccionario->getPalabra("ENDL")->mostrarPrecedencias();
-	//diccionario->getPalabra(".")->mostrarPrecedencias();
+	cout << "Antes de eliminar los puntos (.)"<< endl;
 	diccionario->eliminarPalabra(".");
 	diccionario->eliminarPrecedencia(".");
 
-	cout << "Despues del proceso Largo."<< endl;
-	//diccionario->getPalabra(".")->mostrarPrecedencias();
-	//diccionario->getPalabra("ENDL")->mostrarPrecedencias();
+	cout << "My aparecio: "<< diccionario->getPalabra("my")->apariciones << endl;
+
+	cout << "Antes de Serializar"<< endl;
+	Serializador *unSerializador = new Serializador(diccionario);
+	unSerializador->serializar();
+	cout << "Despues de Serializar."<< endl;
 
 
-	Analizador* analizador = new Analizador(diccionario);
+	//Creo otro diccionario para levantar el archivo de texto serializado y poder comparar.
+	ContenedorDePalabras *otroDiccionario = new ContenedorDePalabras();
+
+	cout << "Antes de DeSerializar"<< endl;
+	Serializador *otroSerializador = new Serializador(otroDiccionario);
+	otroSerializador->deserializar();
+	cout << "Despues de DeSerializar."<< endl;
+
+	cout << "My aparecio: "<< otroDiccionario->getPalabra("my")->apariciones << endl;
+
+
+	//Analizador* analizador = new Analizador(diccionario);
 	//analizador->analizar("test.txt");
-	analizador->analizar("advanced_test.txt");
+	//analizador->analizar("advanced_test.txt");
 
 	cout << "Depsues de analizar" << endl;
 
