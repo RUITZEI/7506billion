@@ -19,7 +19,7 @@
 using namespace std;
 
 typedef vector< string > split_vector_type;
-typedef map<string, int> Mapa;
+typedef boost::unordered_map<string, int> Mapa;
 
 #ifndef ANALIZADOR_H_
 #define ANALIZADOR_H_
@@ -28,7 +28,7 @@ class Analizador {
 private:
 	ContenedorDePalabras* diccionario;
 
-	void analizarOracion(string oracion);
+	string analizarOracion(string linea);
 	double analizarPrecedencias(Palabra* palabra, string precedencia);
 	string armarOracion(split_vector_type palabras, string palabraInsertar, int posInsertar);
 	string obtenerOracion(Palabra* palabraActual, string precedenciaActual, split_vector_type palabrasDeOraciones, int pos);
@@ -36,7 +36,7 @@ public:
 	Analizador(ContenedorDePalabras* diccionario);
 	virtual ~Analizador();
 
-	void analizar(string nombreArchivo);
+	void analizar(string nombreArchEntrada, string nombreArchSalida);
 };
 
 #endif /* ANALIZADOR_H_ */

@@ -164,8 +164,8 @@ int main(int argc, char **argv) {
 
 
 	//Analizador* analizador = new Analizador(diccionario);
-	//analizador->analizar("test.txt");
-	//analizador->analizar("advanced_test.txt");
+	//analizador->analizar("test.txt", "salida.txt");
+	//analizador->analizar("advanced_test.txt", "salida.txt");
 
 	cout << "Depsues de analizar" << endl;
 
