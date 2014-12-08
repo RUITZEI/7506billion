@@ -1,9 +1,8 @@
-esta es mi casa.
-mi casa es una masa.
-la casa es linda.
-mi novia es linda.
-mi novia está en mi casa.
-a mi novia le doy masa.
-la novia es linda.
-la novia es una masa.
-es linda la novia.
+esta es mi casa , es una masa .
+la casa es muy linda .
+mi novia es muy linda .
+mi novia está en mi casa .
+a mi novia le doy masa .
+la novia es muy linda .
+la novia es una masa .
+es linda la novia , en mi casa .

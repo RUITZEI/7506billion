@@ -1,3 +1,4 @@
-es mi casa
-la es linda
-la casa es una
+"id","sentence"
+1,"esta , es mi "" casa "" , una masa ."
+2,"la , es linda ."
+3,"la casa es una ."
