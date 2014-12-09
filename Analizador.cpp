@@ -6,6 +6,7 @@
  */
 
 #include "Analizador.h"
+#include <ctime>
 
 Analizador::Analizador(ContenedorDePalabras* diccionario) {
 	// TODO Auto-generated constructor stub
@@ -36,6 +37,7 @@ void Analizador::analizar(string nombreArchEntrada, string nombreArchSalida)
 			{
 				salida << cont_lineas << ",\"" << analizarOracion(linea) << "\"\n";
 				cont_lineas++;
+				cout << cont_lineas << endl;
 			}
 			else cont++;
 		}
@@ -73,6 +75,11 @@ string Analizador::analizarOracion(string linea)
 	//la palabra que falte sea la ultima
 	palabrasDeOraciones.push_back("endl");
 
+	std::clock_t start;
+	double duration;
+
+	start = std::clock();
+
 	for (vector<string>::iterator palabra = palabrasDeOraciones.begin(); ((palabra != palabrasDeOraciones.end()) && !faltaPalabra); ++palabra)
 	{
 		if (*palabra == "endl")
@@ -100,6 +107,9 @@ string Analizador::analizarOracion(string linea)
 				//Si no la encuentro, recorro las precedencias de la palabra actual, y por cada una de ellas veo si entre sus
 				//precedencias encuentro a precedencia actual
 				faltaPalabra = true;
+				duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
+				cout<<"encuentro hueco:  " <<  duration <<'\n';
+
 				string oracionSalida = obtenerOracion(palabraActual, precedenciaActual, palabrasDeOraciones, contadorPalabras + contadorPalabrasNoEncontradas);
 				salida = oracionSalida;
 			}
@@ -112,6 +122,8 @@ string Analizador::analizarOracion(string linea)
 
 	if (!faltaPalabra)
 	{
+		duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
+		cout<<"no encuentro hueco:  " <<  duration <<'\n';
 		string oracionSalida = obtenerOracion(palabraAux, precedenciaAux, palabrasDeOraciones, posCandidata + contadorPalabrasNoEncontradas);
 		salida = oracionSalida;
 	}
@@ -119,7 +131,7 @@ string Analizador::analizarOracion(string linea)
 	return salida;
 }
 
-string Analizador::obtenerOracion(Palabra* palabraActual, string precedenciaActual, split_vector_type palabrasDeOraciones, int pos)
+string Analizador::obtenerOracion(Palabra* palabraActual, string precedenciaActual, split_vector_type& palabrasDeOraciones, int pos)
 {
 	string salida = "";
 
@@ -130,7 +142,14 @@ string Analizador::obtenerOracion(Palabra* palabraActual, string precedenciaActu
 	string palabraCandidataError = "";
 	bool faltaCandidata = true;
 
+	std::clock_t start;
+	double duration;
+
+	start = std::clock();
+
 	Mapa precedencias = palabraActual->getPrecedencias();
+	if (precedencias.size() > 20)
+		precedencias = palabraActual->getPrecedencias(50);
 	for (Mapa::iterator precedencia = precedencias.begin(); precedencia != precedencias.end(); ++precedencia)
 	{
 		if ((*precedencia).first != "endl")
@@ -172,6 +191,9 @@ string Analizador::obtenerOracion(Palabra* palabraActual, string precedenciaActu
 	else
 		salida = armarOracion(palabrasDeOraciones, palabraCandidataError, posCandidata);
 
+	duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
+	cout<<"encontrar candidata:  " <<  duration <<'\n';
+
 	return salida;
 }
 
@@ -182,6 +204,8 @@ string Analizador::obtenerOracion(Palabra* palabraActual, string precedenciaActu
 double Analizador::analizarPrecedencias(Palabra* palabra, string precedencia)
 {
 	Mapa precedencias = palabra->getPrecedencias();
+	if (precedencias.size() > 20)
+		precedencias = palabra->getPrecedencias(50);
 
 	boost::to_lower(precedencia);
 	Mapa::iterator itPrecedencia = precedencias.find(precedencia);
@@ -190,7 +214,7 @@ double Analizador::analizarPrecedencias(Palabra* palabra, string precedencia)
 	else return 0;
 }
 
-string Analizador::armarOracion(split_vector_type palabras, string palabraInsertar, int posInsertar)
+string Analizador::armarOracion(split_vector_type& palabras, string palabraInsertar, int posInsertar)
 {
 	string salida = "";
 	int contadorPalabras = 0;
