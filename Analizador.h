@@ -30,8 +30,8 @@ private:
 
 	string analizarOracion(string linea);
 	double analizarPrecedencias(Palabra* palabra, string precedencia);
-	string armarOracion(split_vector_type& palabras, string palabraInsertar, int posInsertar);
-	string obtenerOracion(Palabra* palabraActual, string precedenciaActual, split_vector_type& palabrasDeOraciones, int pos);
+	string armarOracion(split_vector_type palabras, string palabraInsertar, int posInsertar);
+	string obtenerOracion(Palabra* palabraActual, string precedenciaActual, split_vector_type palabrasDeOraciones, int pos);
 public:
 	Analizador(ContenedorDePalabras* diccionario);
 	virtual ~Analizador();
