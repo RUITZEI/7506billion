@@ -101,8 +101,8 @@ void LectorDeArchivo::leerArchivo(const char* filename, ContenedorDePalabras* di
 	/* Modificar el de arriba para leer de a X oraciones.
 	 * Usar el de abajo para leer todo el texto.
 	 */
-	while (std::getline(infile, line) && (i< numberOfLines/8))
-	//while (std::getline(infile, line))
+	//while (std::getline(infile, line) && (i< numberOfLines/32))
+	while (std::getline(infile, line))
 	{
 		//cout << line<< endl;
 		//cout << line.length() << endl;

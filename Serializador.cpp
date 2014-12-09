@@ -7,6 +7,8 @@
 
 #include "Serializador.h"
 
+
+
 Serializador::Serializador(ContenedorDePalabras *unDiccionario) {
 	this->diccionario = unDiccionario;
 }
@@ -30,7 +32,8 @@ void Serializador::serializar(){
 		//Escribo la salida de las precedencias sin el endl porque es uno atras del otro(stream de datos).
 		string salidaPrecedencias = it->second->serializarPrecedencias();
 
-		//Puede que tenga basurita
+		//Si la salida de las precedencias es menor a 0, lo descarto porque ninguna de sus precedencias
+		//aparecio mas de 100 veces.
 		if (salidaPrecedencias.length() > 0){
 			archPrecedencias << salidaPrecedencias;
 

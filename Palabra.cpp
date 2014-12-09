@@ -9,6 +9,8 @@
 #include <algorithm>
 #include <boost/lexical_cast.hpp>
 
+const int MINIMO_APARICIONES = 10;
+
 /*
  * PRIVADOS !!!
  */
@@ -114,7 +116,7 @@ string Palabra::serializarPrecedencias(){
 
 	for (it = this->precedencias.begin(); it!=this->precedencias.end(); ++it){
 		//Si tiene menos de 100 apariciones no lo agrego en las precedencias
-		if (it->second > 100){
+		if (it->second > MINIMO_APARICIONES){
 			output.append(it->first);
 			output.append(",");
 			output.append(boost::lexical_cast<std::string>(it->second));
@@ -125,6 +127,7 @@ string Palabra::serializarPrecedencias(){
 		}
 	}
 
+	//Ninguna precedencia tenia mas que MINIMO_APARICIONES
 	if (output.length() < 1) return "";
 
 	//Elimino la ultima coma.

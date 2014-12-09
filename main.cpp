@@ -134,7 +134,7 @@ int main(int argc, char **argv) {
 	//Cantidad de lineas del set de entreamiento, por si sirve.
 	int numberOfLines = 30301028;
 
-	/*ContenedorDePalabras *diccionario = new ContenedorDePalabras();
+	ContenedorDePalabras *diccionario = new ContenedorDePalabras();
 
 	//Ruta al archivo de texto de 5 gigas, obviamente es una ruta local.
 	LectorDeArchivo::leerArchivo("/media/manuel/FE64EB6864EB225F/Downloads/train_v2.txt/train_v2.txt", diccionario);
@@ -150,7 +150,7 @@ int main(int argc, char **argv) {
 	Serializador *unSerializador = new Serializador(diccionario);
 	unSerializador->serializar();
 	cout << "Despues de Serializar."<< endl;
-*/
+
 
 	//Creo otro diccionario para levantar el archivo de texto serializado y poder comparar.
 	ContenedorDePalabras *otroDiccionario = new ContenedorDePalabras();
@@ -163,9 +163,9 @@ int main(int argc, char **argv) {
 	cout << "My aparecio: "<< otroDiccionario->getPalabra("my")->apariciones << endl;
 
 
-	Analizador* analizador = new Analizador(otroDiccionario);
+	//Analizador* analizador = new Analizador(otroDiccionario);
 	//analizador->analizar("test.txt", "salida.txt");
-	analizador->analizar("kaggle_test.txt", "salida.txt");
+	//analizador->analizar("kaggle_test.txt", "salida.txt");
 
 	cout << "Depsues de analizar" << endl;
 
