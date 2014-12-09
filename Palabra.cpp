@@ -113,11 +113,19 @@ string Palabra::serializarPrecedencias(){
 	string output = "";
 
 	for (it = this->precedencias.begin(); it!=this->precedencias.end(); ++it){
+		//Si tiene menos de 100 apariciones no lo agrego en las precedencias
+		if (it->second > 100){
 			output.append(it->first);
 			output.append(",");
 			output.append(boost::lexical_cast<std::string>(it->second));
 			output.append(",");
+		}else {
+			//Y le bajo la cantidad de apariciones
+			this->apariciones -= it->second;
+		}
 	}
+
+	if (output.length() < 1) return "";
 
 	//Elimino la ultima coma.
 	output = output.substr(0,output.length()-1);
@@ -150,6 +158,17 @@ void Palabra::agregarPrecedencia(const string& unString, int cantidadDeAparicion
 Palabra::Palabra(const string& unNombre, int cantidadDeApariciones) {
 	this->nombre = unNombre;
 	this->apariciones = cantidadDeApariciones;
+}
+
+Mapa Palabra::getPrecedencias(int valorMinimo){
+	Mapa mapaAux;
+
+	IteradorMapa it = this->getIteradorMapa();
+	for (it = this->precedencias.begin(); it!=this->precedencias.end(); ++it){
+		if (it->second > valorMinimo) mapaAux[it->first] = it->second;
+	}
+
+	return mapaAux;
 }
 
 

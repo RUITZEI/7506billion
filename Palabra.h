@@ -45,6 +45,7 @@ public:
 	string getNombre();
 	int getApariciones();
 	Mapa& getPrecedencias();
+	Mapa getPrecedencias(int valorMinimo);
 	void incrementarApariciones();
 
 	bool existePalabraEnPrecedencias(string unString);
