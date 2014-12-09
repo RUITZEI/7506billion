@@ -147,9 +147,9 @@ string Analizador::obtenerOracion(Palabra* palabraActual, string precedenciaActu
 
 	start = std::clock();
 
-	Mapa precedencias = palabraActual->getPrecedencias();
-	if (precedencias.size() > 20)
-		precedencias = palabraActual->getPrecedencias(50);
+	Mapa& precedencias = palabraActual->getPrecedencias();
+	/*if (precedencias.size() > 20)
+		precedencias = palabraActual->getPrecedencias(50);*/
 	for (Mapa::iterator precedencia = precedencias.begin(); precedencia != precedencias.end(); ++precedencia)
 	{
 		if ((*precedencia).first != "endl")
@@ -203,9 +203,9 @@ string Analizador::obtenerOracion(Palabra* palabraActual, string precedenciaActu
  */
 double Analizador::analizarPrecedencias(Palabra* palabra, string precedencia)
 {
-	Mapa precedencias = palabra->getPrecedencias();
-	if (precedencias.size() > 20)
-		precedencias = palabra->getPrecedencias(50);
+	Mapa& precedencias = palabra->getPrecedencias();
+	/*if (precedencias.size() > 20)
+		precedencias = palabra->getPrecedencias(50);*/
 
 	boost::to_lower(precedencia);
 	Mapa::iterator itPrecedencia = precedencias.find(precedencia);
