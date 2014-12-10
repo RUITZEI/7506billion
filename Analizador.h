@@ -21,6 +21,8 @@ using namespace std;
 typedef vector< string > split_vector_type;
 typedef boost::unordered_map<string, int> Mapa;
 
+const int CANTIDAD_DE_PALABRAS = 151153;
+
 #ifndef ANALIZADOR_H_
 #define ANALIZADOR_H_
 
@@ -28,10 +30,10 @@ class Analizador {
 private:
 	ContenedorDePalabras* diccionario;
 
-	string analizarOracion(string linea);
+	string analizarOracion(const string& linea);
 	double analizarPrecedencias(Palabra* palabra, string precedencia);
-	string armarOracion(split_vector_type& palabras, string palabraInsertar, int posInsertar);
-	string obtenerOracion(Palabra* palabraActual, string precedenciaActual, split_vector_type& palabrasDeOraciones, int pos);
+	string armarOracion(split_vector_type& palabras, const string& palabraInsertar, int posInsertar);
+	string obtenerOracion(Palabra* palabraActual, const string& precedenciaActual, split_vector_type& palabrasDeOraciones, int pos);
 public:
 	Analizador(ContenedorDePalabras* diccionario);
 	virtual ~Analizador();

@@ -28,6 +28,7 @@ Palabra* ContenedorDePalabras::getPalabra(string unString){
 	return this->lista.at(unString);
 }
 
+
 ContenedorDePalabras::~ContenedorDePalabras() {
 	// TODO Auto-generated destructor stub
 }

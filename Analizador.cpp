@@ -50,7 +50,7 @@ void Analizador::analizar(string nombreArchEntrada, string nombreArchSalida)
 /*
  * Obtener cada palabra, con su precedencia, en una oracion, y buscar si esa precedencia tiene sentido
  */
-string Analizador::analizarOracion(string linea)
+string Analizador::analizarOracion(const string& linea)
 {
 	string salida = "";
 
@@ -131,7 +131,7 @@ string Analizador::analizarOracion(string linea)
 	return salida;
 }
 
-string Analizador::obtenerOracion(Palabra* palabraActual, string precedenciaActual, split_vector_type& palabrasDeOraciones, int pos)
+string Analizador::obtenerOracion(Palabra* palabraActual, const string& precedenciaActual, split_vector_type& palabrasDeOraciones, int pos)
 {
 	string salida = "";
 
@@ -147,19 +147,22 @@ string Analizador::obtenerOracion(Palabra* palabraActual, string precedenciaActu
 
 	start = std::clock();
 
-	Mapa& precedencias = palabraActual->getPrecedencias();
 	/*if (precedencias.size() > 20)
 		precedencias = palabraActual->getPrecedencias(50);*/
-	for (Mapa::iterator precedencia = precedencias.begin(); precedencia != precedencias.end(); ++precedencia)
+	for (IteradorMapa precedencia = palabraActual->getPrecedencias().begin(); precedencia != palabraActual->getPrecedencias().end(); ++precedencia)
 	{
-		if ((*precedencia).first != "endl")
+		if (precedencia->first != "endl")
 		{
 			//Esta es la probabilidad que esta palabra candidata pase como precedencia de palabraActual
-			double probabilidadActual = (*precedencia).second / (double)palabraActual->getApariciones();
+			int aparicionesDePrecedencia = 0;
+			if (this->diccionario->existePalabra(precedencia->first)) aparicionesDePrecedencia = this->diccionario->getPalabra(precedencia->first)->getApariciones();
+			double probabilidadActual = ( (precedencia->second + 1) / (double) (aparicionesDePrecedencia + CANTIDAD_DE_PALABRAS) );
 
-			if (diccionario->existePalabra((*precedencia).first))
+			if (diccionario->existePalabra(precedencia->first))
 			{
-				Palabra* precedenciaCandidata = diccionario->getPalabra((*precedencia).first);
+				Palabra* precedenciaCandidata = diccionario->getPalabra(precedencia->first);
+
+
 				double probabilidadPrec = analizarPrecedencias(precedenciaCandidata, precedenciaActual);
 				//Si no encuento entre las precedencias de la candidata a precedenciaActual => probabilidadPrec = 0
 				if (probabilidadPrec > 0)
@@ -169,7 +172,7 @@ string Analizador::obtenerOracion(Palabra* palabraActual, string precedenciaActu
 					if ((probabilidadActual * probabilidadPrec) >= probabilidadCandidata)
 					{
 						probabilidadCandidata = probabilidadActual * probabilidadPrec;
-						palabraCandidata = (*precedencia).first;
+						palabraCandidata = precedencia->first;
 					}
 				}
 				else
@@ -179,7 +182,7 @@ string Analizador::obtenerOracion(Palabra* palabraActual, string precedenciaActu
 					if (probabilidadActual >= probabilidadCandidataError)
 					{
 						probabilidadCandidataError = probabilidadActual;
-						palabraCandidataError = (*precedencia).first;
+						palabraCandidataError = precedencia->first;
 					}
 				}
 			}
@@ -192,7 +195,7 @@ string Analizador::obtenerOracion(Palabra* palabraActual, string precedenciaActu
 		salida = armarOracion(palabrasDeOraciones, palabraCandidataError, posCandidata);
 
 	duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
-	cout<<"encontrar candidata:  " <<  duration <<'\n';
+	cout<<"Tiempo total de ejecucion: " <<  duration <<'\n';
 
 	return salida;
 }
@@ -203,18 +206,27 @@ string Analizador::obtenerOracion(Palabra* palabraActual, string precedenciaActu
  */
 double Analizador::analizarPrecedencias(Palabra* palabra, string precedencia)
 {
-	Mapa& precedencias = palabra->getPrecedencias();
+	//Mapa& precedencias = palabra->getPrecedencias();
 	/*if (precedencias.size() > 20)
 		precedencias = palabra->getPrecedencias(50);*/
 
 	boost::to_lower(precedencia);
-	Mapa::iterator itPrecedencia = precedencias.find(precedencia);
+	/*Mapa::iterator itPrecedencia = precedencias.find(precedencia);
 	if (itPrecedencia != precedencias.end())
 		return itPrecedencia->second / (double)palabra->getApariciones();
-	else return 0;
+	else return 0;*/
+
+	int aparicionesDePrecedencia = 0;
+	boost::to_lower(precedencia);
+	if (palabra->existePalabraEnPrecedencias(precedencia)){
+		if (this->diccionario->existePalabra(precedencia)) aparicionesDePrecedencia = this->diccionario->getPalabra(precedencia)->getApariciones();
+
+		return ( (palabra->getPrecedencias()[precedencia] + 1) / (double) (aparicionesDePrecedencia + CANTIDAD_DE_PALABRAS) );
+	}
+	else return ( 1 / (double) (aparicionesDePrecedencia + CANTIDAD_DE_PALABRAS) );
 }
 
-string Analizador::armarOracion(split_vector_type& palabras, string palabraInsertar, int posInsertar)
+string Analizador::armarOracion(split_vector_type& palabras, const string& palabraInsertar, int posInsertar)
 {
 	string salida = "";
 	int contadorPalabras = 0;

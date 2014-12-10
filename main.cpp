@@ -134,7 +134,7 @@ int main(int argc, char **argv) {
 	//Cantidad de lineas del set de entreamiento, por si sirve.
 	int numberOfLines = 30301028;
 
-	ContenedorDePalabras *diccionario = new ContenedorDePalabras();
+	/*ContenedorDePalabras *diccionario = new ContenedorDePalabras();
 
 	//Ruta al archivo de texto de 5 gigas, obviamente es una ruta local.
 	LectorDeArchivo::leerArchivo("/media/manuel/FE64EB6864EB225F/Downloads/train_v2.txt/train_v2.txt", diccionario);
@@ -151,9 +151,11 @@ int main(int argc, char **argv) {
 	unSerializador->serializar();
 	cout << "Despues de Serializar."<< endl;
 
-
+*/
 	//Creo otro diccionario para levantar el archivo de texto serializado y poder comparar.
 	ContenedorDePalabras *otroDiccionario = new ContenedorDePalabras();
+
+	//int dog = 1/0;
 
 	cout << "Antes de DeSerializar"<< endl;
 	Serializador *otroSerializador = new Serializador(otroDiccionario);
@@ -162,10 +164,19 @@ int main(int argc, char **argv) {
 
 	cout << "My aparecio: "<< otroDiccionario->getPalabra("my")->apariciones << endl;
 
+	std::clock_t start;
+	double duration;
 
-	//Analizador* analizador = new Analizador(otroDiccionario);
+
+	start = std::clock();
+
+	Analizador* analizador = new Analizador(otroDiccionario);
 	//analizador->analizar("test.txt", "salida.txt");
 	//analizador->analizar("kaggle_test.txt", "salida.txt");
+	analizador->analizar("/media/manuel/FE64EB6864EB225F/Downloads/train_v2.txt/test_v2.txt", "salida.txt");
+
+	duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
+	cout<<"La ejecucion tardo:  " <<  duration <<'\n';
 
 	cout << "Depsues de analizar" << endl;
 
